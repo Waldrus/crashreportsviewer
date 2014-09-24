@@ -1,4 +1,4 @@
-AuthUserFile /home/bicou/crashes.htpasswd
+AuthUserFile /home/wald/web/crashreport.ru/public_html/scr/crash.htpasswd
 AuthGroupFile /dev/null
 AuthName "Oh hai."
 AuthType Basic

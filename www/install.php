@@ -49,7 +49,7 @@ if (!isset($_POST['submit'])) {
 			echo '<div class="ok">Selected the  database `'.$_POST['database'].'`.</div>';
 			
 			// Write config.php
-			$file = fopen($_SERVER['DOCUMENT_ROOT'] . "/../config.php", "w");
+			$file = fopen($_SERVER['DOCUMENT_ROOT'] . "/../config.dev.php", "w");
 			if (!$file) {
 				echo '<div class="error">Unable to create `config.php`. Check file/folder permissions.</div>';
 			} else {

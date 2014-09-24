@@ -55,7 +55,7 @@ if ($success != TRUE) {
 
 // Close MySQL
 mysql_close($mysql);
-
+file_put_contents("trace.log", var_export(array($_POST, $object), true));
 //$f = fopen("log", "w+");
 //fputs($f, "Output of ".date("d/M/Y G:i:s").":\n".ob_get_clean());
 //fclose($f);

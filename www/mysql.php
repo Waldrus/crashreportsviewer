@@ -201,6 +201,7 @@ $values = array(	//"id", // auto_increment
 	"environment",
 	"settings_system",
 	"settings_secure",
-	"shared_preferences");
+	"shared_preferences",
+	"application_log");
 
 ?>

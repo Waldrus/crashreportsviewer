@@ -17,8 +17,8 @@
  */
 
 define('HTACCESS_FILE', $_SERVER['DOCUMENT_ROOT']."/.htaccess");
-define('CONFIG_FILE', $_SERVER['DOCUMENT_ROOT']."/../config.php");
-define('APP_PACKAGE_URI', isset($_GET['package']) ? "/".$_GET['package'] : "/");
+define('CONFIG_FILE', $_SERVER['DOCUMENT_ROOT']."/../config.dev.php");
+define('APP_PACKAGE_URI', isset($_GET['package']) ? "/".$_GET['package'] : "");
 
 $start = microtime();
 function dbug($file, $line) {
@@ -270,7 +270,7 @@ function get_nb_crashes_per_package($package) {
 	$sel = "added_date > '?'";
 	$selA = array(time() - 86400*30);
 	
-	$sel .= " AND package_name = '?'";
+	$sel .= " AND package_name = ?";
 	$selA[] = $package;
 	
 	$order = "date ASC";
@@ -298,16 +298,16 @@ function display_crashes_vs_date() {
 	$columns = array('package_name');
 	
 	$sql = bicou_mysql_select(array('package_name'), "crashes", null, null, 'package_name asc', 'package_name');
+
 	$res = mysql_query($sql);
 	
-	if (!res || false===mysql_num_rows($res)) {
+	if (!$res || false===mysql_num_rows($res)) {
 		echo "<p>$sql</p>";
 		echo "<p>Server error: ".mysql_error()."</p>";
 		return;
 	} else if (0==mysql_num_rows($res)) {
 		echo "<p>No data yet</p>";
 	}
-	
 	echo '<div id="crashes_vs_date" style="height:400px;width:600px;"></div>';
 	echo "<script>$(document).ready(function(){\n";
 	$series = array();
@@ -421,6 +421,7 @@ function display_crashes($status) {
 	}
 
 	$order = array();
+        $order[] = "last_seen DESC";
 	if ($_GET['v']) {
 		$order[] = "nb_errors DESC";
 	}
@@ -434,7 +435,7 @@ function display_crashes($status) {
 	if (!$_GET['v']) {
 		$order[] = "version_code DESC";
 	}
-	$order[] = "last_seen DESC";
+	
 
 	$tables = "crashes";
 
