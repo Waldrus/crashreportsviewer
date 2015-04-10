@@ -1,3 +1,4 @@
 db.version
 config.php
 *.swp
+.idea

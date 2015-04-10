@@ -56,12 +56,15 @@ function display_crashes_vs_date_per_version($package) {
 	}
 	$selection[] = "added_date > ?";
 	$selectionArgs[] = time() - 30*86400;
+        
+        $selection[] = "is_silent = ''";
 
 	$groupBy = "app_version_code, crashdate";
 
 	$orderBy = "appcode asc, crashdate asc";
 
 	$sql = bicou_mysql_select($columns, "crashes", implode(" AND ", $selection), $selectionArgs, $orderBy, $groupBy);
+
 	$res = mysql_query($sql);
 
 	echo '<div id="crashes_per_version_vs_date" style="height:300px; width:500px;"></div>'."\n";
@@ -181,10 +184,10 @@ function display_versions_table() {
 					'app_version_code', 'app_version_name', 'android_version');
 
 	if(!empty($_GET['package'])) {
-		$sel = "package_name LIKE ?";
+		$sel = "package_name LIKE ? AND is_silent = ''";
 		$selA = array($_GET['package']);
 	} else {
-		$sel = null;
+		$sel = "is_silent = ''";
 		$selA = null;
 	}
 
@@ -391,7 +394,7 @@ function display_crashes($status) {
 	$columns[] = 'android_version';
 	$columns[] = 'stack_trace';
 
-	$sel = "status = ?";
+	$sel = "status = ? AND is_silent = ''";
 	$selA = array($status);
 
 	// Filter by package
@@ -438,8 +441,9 @@ function display_crashes($status) {
 	
 
 	$tables = "crashes";
-
-	$sql = bicou_mysql_select($columns, $tables, $sel, $selA, implode(", ", $order), "issue_id", "$start, 50");
+        $start = (int)$_GET['offset'];
+        $count = (int)$_GET['count'] <= 0 ? 50 : (int)$_GET['count'];
+	$sql = bicou_mysql_select($columns, $tables, $sel, $selA, implode(", ", $order), "issue_id", "$start, $count");
 	$res = mysql_query($sql);
 
 	if (!$res) {

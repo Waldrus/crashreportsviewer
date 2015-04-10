@@ -55,11 +55,17 @@ function showReport($tab) {
 	echo '<table>';
 	summaryLine("Report #", $tab[id]);
 	$added = '';
+	if (intval($tab["app_install_time"]) > 0) {
+		$tab["app_install_time"] = date('d/M/Y G:i:s', intval($tab["app_install_time"]));
+	} else {
+		$tab["app_install_time"] = "Date unknown";
+	}
 	if (intval($tab[added_date]) > 0) {
 		$added = date('d/M/Y G:i:s', intval($tab[added_date]));
 	} else {
 		$added = "Date unknown";
 	}
+
 	summaryLine("Added", $added);
 	$status = "";
 	if (intval($tab['status']) == STATE_FIXED) {
@@ -83,7 +89,10 @@ function showReport($tab) {
 	summaryLine("Is Silent", $tab['is_silent']);
 	summaryLine("Device Id", $tab['device_id']);
 	summaryLine("Installation Id", $tab['installation_id']);
+	summaryLine("Android Id", $tab['android_id']);
+	summaryLine("App install date", $tab['app_install_time']);
 	summaryLine("User Email", $tab['user_email']);
+	summaryLine("Silent", $tab['is_silent']);
 	echo '</table>';
 	echo "</div>";
 	echo "<div id='details_" . $tab['id'] . "' style='float:right; width:70%'>";
@@ -107,6 +116,7 @@ function showReport($tab) {
 	detailsLink($tab, 'settings_system', 'System Settings');
 	detailsLink($tab, 'settings_secure', 'Secure Settings');
 	detailsLink($tab, 'shared_preferences', 'Shared Preferences');
+	detailsLink($tab, 'application_log', 'Application Log');
 	echo '</ul>';
 	echo "</div>";
 	echo "<div id='details_content_" . $tab['id'] . "'><pre>";

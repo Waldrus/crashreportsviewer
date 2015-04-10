@@ -202,6 +202,8 @@ $values = array(	//"id", // auto_increment
 	"settings_system",
 	"settings_secure",
 	"shared_preferences",
-	"application_log");
+	"application_log",
+	"android_id",
+	"app_install_time");
 
 ?>
